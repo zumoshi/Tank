@@ -114,6 +114,9 @@ $.get('./map.txt',function(map){
 	b.hit=hit
 	b.drawmap=drawmap
 	b.pngtile=pngtile
+	b.aiapi={move:tank_move,shoot:shelik}
+	//init:
+	mission()
 })})
 
 var b={
@@ -178,6 +181,7 @@ var b={
     				clearInterval(tmp.tmr)
     				tmp.obj.remove()
     				tmp=null
+    				return;
     			}
     		tmp.fuse++;
     	},50)

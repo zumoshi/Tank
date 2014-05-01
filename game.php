@@ -17,12 +17,15 @@
 			}
 		</style>
 		<script>
+			var enemy
+		function mission(){
 			tank=b.tank('./tank.png',90,2)
-		    tanks.push(tank.loc)
+		    b.tanks.push(tank.loc)
 		    
-		    var enemy=b.tank('./tank_r.png',20,65)
-		    tanks.push(enemy.loc)
-		    ai.one(enemy,{move:tank_move,shoot:shelik},tanks,tile)
+		    enemy=b.tank('./tank_r.png',20,65)
+		    b.tanks.push(enemy.loc)
+		    ai.one(enemy,b.aiapi,b.tanks,b.tile)
+		}
 		</script>
 	</head>
 	<body>

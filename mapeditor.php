@@ -19,7 +19,7 @@
 		</style>
 		<script>
 		var mode=1
-		$(document).ready(function(){
+		function mission(){
 			var down=false
 			$('#game')
 				.mousedown(function(){down=true})
