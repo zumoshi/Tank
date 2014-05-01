@@ -56,11 +56,12 @@
 				}
 				map+="\n"
 			}
+			return map
 			$('#cpmap').val(map)
 			$('#cpmap').show()
 		}
 		function givemap_f(){
-			var blob = new Blob([giveme()], {type: "text/plain;charset=utf-8"});
+			var blob = new Blob([givemap()], {type: "text/plain;charset=utf-8"});
 			saveAs(blob, "shahkar.map");
 		}
 		</script>
