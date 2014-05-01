@@ -29,18 +29,15 @@ $.get('./map.txt',function(map){
     	}
     	i++;
     }
-    for(y=0;y<tile.length;y++){
-    	for(x=0;x<tile[0].length;x++){
-    		stage.addChild(pngtile(tile[y][x],x,y))
-    	}
+    function drawmap(){
+    	stage.removeAllChildren()
+	    for(y=0;y<tile.length;y++){
+	    	for(x=0;x<tile[0].length;x++){
+	    		stage.addChild(pngtile(tile[y][x],x,y))
+	    	}
+	    }
     }
-    
-    tank=b.tank('./tank.png',90,2)
-    tanks.push(tank.loc)
-    
-    var enemy=b.tank('./tank_r.png',20,65)
-    tanks.push(enemy.loc)
-    ai.one(enemy,{move:tank_move,shoot:shelik},tanks,tile)
+    drawmap()
     
     //tank move:
     var key_interval;
@@ -115,6 +112,8 @@ $.get('./map.txt',function(map){
 	b.tanks=tanks
 	//expose functions:
 	b.hit=hit
+	b.drawmap=drawmap
+	b.pngtile=pngtile
 })})
 
 var b={

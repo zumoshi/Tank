@@ -16,6 +16,14 @@
 				background:red;
 			}
 		</style>
+		<script>
+			tank=b.tank('./tank.png',90,2)
+		    tanks.push(tank.loc)
+		    
+		    var enemy=b.tank('./tank_r.png',20,65)
+		    tanks.push(enemy.loc)
+		    ai.one(enemy,{move:tank_move,shoot:shelik},tanks,tile)
+		</script>
 	</head>
 	<body>
 		<div id="wrapper" style="width: 1000px;height: 700px;margin:0 auto;position: relative;">
