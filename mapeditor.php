@@ -64,21 +64,17 @@
 		<div id="wrapper" style="width: 1000px;margin:0 auto;position: relative;">
 			<canvas id="game" width="1000" height="700"></canvas>
 			<div id="info">
-				<input type="button" value="1" onclick="mode=1" />
-				<input type="button" value="2" onclick="mode=2" />
-				<input type="button" value="3" onclick="mode=3" />
-				<input type="button" value="4" onclick="mode=4" />
-				<input type="button" value="5" onclick="mode=5" />
-				<input type="button" value="6" onclick="mode=6" />
-				<input type="button" value="7" onclick="mode=7" />
-				<input type="button" value="8" onclick="mode=8" />
-				<input type="button" value="9" onclick="mode=9" />
+				<input type="button" style="width:10px;height:17px;background:url(./tile/1.png)" onclick="mode=1" />
+				<input type="button" style="width:10px;height:17px;background:url(./tile/2.png)" onclick="mode=2" />
+				<input type="button" style="width:10px;height:17px;background:url(./tile/3.png)" onclick="mode=3" />
+				<input type="button" style="width:10px;height:17px;background:url(./tile/4.png)" onclick="mode=4" />
+				<input type="button" style="width:10px;height:17px;background:url(./tile/5.png)" onclick="mode=5" />
+				<input type="button" style="width:10px;height:17px;background:url(./tile/6.png)" onclick="mode=6" />
+				<input type="button" style="width:10px;height:17px;background:url(./tile/7.png)" onclick="mode=7" />
+				<input type="button" style="width:10px;height:17px;background:url(./tile/8.png)" onclick="mode=8" />
+				<input type="button" style="width:10px;height:17px;background:url(./tile/9.png)" onclick="mode=9" />
 				<input type="button" value="Done!" onclick="givemap()" />
-				<input type="button" value="S:1" onclick="ghalam=1" />
-				<input type="button" value="S:3" onclick="ghalam=3" />
-				<input type="button" value="S:5" onclick="ghalam=5" />
-				<input type="button" value="S:11" onclick="ghalam=11" />
-				<input type="button" value="S:21" onclick="ghalam=21" />
+				Size:<input type="range" min="1" max="51" value="1" step="2" onchange="ghalam=this.value" />
 				<input type="button" value="Ctrl_z" onclick="if(ctrl_z.length)b.tile=ctrl_z.pop();b.drawmap();b.stage.update();" />
 			</div>
 		</div>
