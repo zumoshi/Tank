@@ -11,8 +11,8 @@
 				transition: -moz-transform 0.5s,top 0.1s,left 0.1s;
 			}
 			.gloole{
-				transition: -webkit-transform 0.5s,top 0.1s,left 0.1s;
-				transition: -moz-transform 0.5s,top 0.1s,left 0.1s;
+				transition: top 0.15s,left 0.15s;
+				transition: top 0.15s,left 0.15s;
 				width: 5px;height:5px;
 				background:red;
 			}
