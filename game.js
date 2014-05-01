@@ -38,7 +38,14 @@ $.get('./map.txt',function(map){
     tank=b.tank('./tank.png',90,2)
     
     //tank move:
-    $( window ).keypress(function( event ) {
+    var key_interval;
+    $( window ).keydown(function( event ) {
+    	if([37,38,39,40].indexOf(event.keyCode)==-1)return
+    	tank_move({charCode:JSON.parse('{"37":"a","38":"w","39":"d","40":"s"}')[event.keyCode].charCodeAt(0)})
+    })
+    $( window ).keypress(tank_move)
+    
+    function tank_move( event ) {
     	//console.log(event)
     	var key =String.fromCharCode(event.charCode)
     	var rot={w:0,a:270,s:180,d:90}
@@ -50,7 +57,7 @@ $.get('./map.txt',function(map){
     		if(typeof move_y[key] !== "undefined")tank.y+=move_y[key]
     	}
     	tank.update()
-    })
+    }
     
     function ejaze(x,y,j){
     	//console.log([x,y,j])
