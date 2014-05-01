@@ -84,6 +84,19 @@ $.get('./map.txt',function(map){
     }
     function mamnoo(a){return a.indexOf(2)!=-1}
     
+    function hit(tankloc){
+    	if(tankloc==tank.loc)tank.joon--
+    	if(tankloc==enemy.loc)enemy.joon--
+    	
+    	$('#info').text('Joon = '+tank.joon+' , Joon enemy = '+enemy.joon)
+    	
+    	if(tank.joon==0)$('body').html('<h1>You Lost!</h1>')
+    	if(enemy.joon==0)$('body').html('<h1>You Won!</h1>')
+    	if(enemy.joon==0 || tank.joon==0){
+    		$('body').append('<p>Press f5 to play again')
+    	}
+    }
+    
     function pngtile(i,x,y){
 		if(typeof png[i]==="undefined"){
 			png[i] = new Image()
@@ -100,6 +113,8 @@ $.get('./map.txt',function(map){
 	b.stage=stage
 	b.tile=tile
 	b.tanks=tanks
+	//expose functions:
+	b.hit=hit
 })})
 
 var b={
@@ -109,6 +124,7 @@ var b={
 		tmp.loc.x=x
     	tmp.loc.y=y
     	tmp.rotation=0
+    	tmp.joon=10
     	tmp.obj=$('<img>')
     		.attr('src',png)
     		.addClass('tank')
@@ -136,6 +152,7 @@ var b={
     		left:tmp.x*10+'px',
     		position:'absolute'
     	})}
+    	tmp.fuse=0;
     	tmp.update()
     	tmp.tmr=setInterval(function(){
     		var move_x={a:-1,d:+1},move_y={w:-1,s:+1}
@@ -143,6 +160,19 @@ var b={
     		if(typeof move_y[dir] !== "undefined")tmp.y+=move_y[dir]
     		tmp.update()
     		
+    		//barkhord b tank
+    		if(tmp.fuse>4)
+    			for(var i=0;i<b.tanks.length;i++){
+    				if(Math.abs((b.tanks[i].x+2)-tmp.x)<2
+    					&& Math.abs((b.tanks[i].y+2)-tmp.y)<2){
+    						b.boom(tmp.x,tmp.y)
+    						b.hit(b.tanks[i])
+    						tmp.x=-1;
+    						tmp.y=-1;
+    					}
+    			}
+    		
+    		//khuruj az safe
     		if(tmp.x < 0 || tmp.x > b.tile[0].length
     			|| tmp.y<0 || tmp.y > b.tile.length){
     				//console.log([tmp.x,tmp.y])
@@ -150,7 +180,47 @@ var b={
     				tmp.obj.remove()
     				tmp=null
     			}
-    	},150)
+    		tmp.fuse++;
+    	},50)
+    	return tmp;
+	},
+	boom:function(x,y){
+		var tmp={}
+		tmp.loc={}
+		tmp.loc.x=x-2
+    	tmp.loc.y=y-2
+    	tmp.obj=$('<div>')
+    		.css({
+    			position:'absolute',
+    			top:tmp.loc.y*10+'px',
+	    		left:tmp.loc.x*10+'px',
+	    		width:'40px',
+	    		height:'40px',
+	    		background:'url(./res/boom.png)'
+    		})
+    		.appendTo('#wrapper')
+    	tmp.i=0
+    	tmp.a=[
+    		[0,0],[40,0],[80,0],[120,0],
+    		[0,40],[40,40],[80,40],[120,40],
+    		[0,80],[40,80],[80,80],[120,80],
+    		[0,120],[40,120],[80,120],[120,120]
+    	]
+    	tmp.tmr=setInterval(function(){
+    		tmp.obj.css({
+    			'background-position-x': '-'+tmp.a[tmp.i][0]+'px',
+				'background-position-y': '-'+tmp.a[tmp.i][1]+'px'
+    		})
+    		tmp.i++;
+    		if(tmp.i==tmp.a.length){
+    			clearInterval(tmp.tmr)
+    			tmp.obj.remove()
+    			tmp=null
+    		}
+    	},75)
     	return tmp;
 	}
 }
+
+b.boom.png= new Image()
+b.boom.png.src='./res/boom.png'
