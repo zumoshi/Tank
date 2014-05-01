@@ -18,7 +18,7 @@
 			#game{cursor:pointer;}
 		</style>
 		<script>
-		var mode=1,ghalam=1
+		var mode=1,ghalam=1,ctrl_z=[]
 		function mission(){
 			var down=false
 			$('#game')
@@ -30,9 +30,10 @@
 					paint(~~(e.offsetX/10),~~(e.offsetY/10))
 				})
 			function paint(x,y){
-				//console.log([x,y,b.tile[y][x],mode])
+				console.log([x,y,b.tile[y][x],mode])
 				if(b.tile[y][x]==mode)return
 				
+				ctrl_z.push(JSON.parse(JSON.stringify(b.tile)))
 				if(ghalam==1){b.tile[y][x]=mode}
 					else{
 						for(var i = -~~(ghalam/2);i<~~(ghalam/2);i++){
@@ -76,6 +77,9 @@
 				<input type="button" value="S:1" onclick="ghalam=1" />
 				<input type="button" value="S:3" onclick="ghalam=3" />
 				<input type="button" value="S:5" onclick="ghalam=5" />
+				<input type="button" value="S:11" onclick="ghalam=11" />
+				<input type="button" value="S:21" onclick="ghalam=21" />
+				<input type="button" value="Ctrl_z" onclick="if(ctrl_z.length)b.tile=ctrl_z.pop();b.drawmap();b.stage.update();" />
 			</div>
 		</div>
 		<textarea id="cpmap" style="display:none;"></textarea>

@@ -1,7 +1,8 @@
 var tank={};
 $(document).ready(function(){
 $.get('./map.txt',function(map){
-	var tile=Array(), png={}, tanks=[];
+	b.tile=Array()
+	var png={}, tanks=[];
 	//var _tile = Array();
 	//for(var i =1;i<7;i++)_tile[i]=(new createjs.Bitmap('./tile/'+i+'.png'));
 	//tank = new createjs.Bitmap('./tank.png');
@@ -22,18 +23,18 @@ $.get('./map.txt',function(map){
     	if(map[i]=="\n"){
     		y++;
     		x=0;
-    		tile[y]=Array();
+    		b.tile[y]=Array();
     	}else{
-    		tile[y][x]=parseInt(map[i])
+    		b.tile[y][x]=parseInt(map[i])
     		x++
     	}
     	i++;
     }
     function drawmap(){
     	stage.removeAllChildren()
-	    for(y=0;y<tile.length;y++){
-	    	for(x=0;x<tile[0].length;x++){
-	    		stage.addChild(pngtile(tile[y][x],x,y))
+	    for(y=0;y<b.tile.length;y++){
+	    	for(x=0;x<b.tile[0].length;x++){
+	    		stage.addChild(pngtile(b.tile[y][x],x,y))
 	    	}
 	    }
     }
@@ -69,10 +70,10 @@ $.get('./map.txt',function(map){
     function ejaze(x,y,j){
     	//console.log([x,y,j])
     	var h={
-    		a:function(){return !(x>0) || mamnoo([tile[y][x-1],tile[y+1][x-1],tile[y+2][x-1],tile[y+3][x-1]])},
-    		s:function(){return (y+5 > tile.length) || mamnoo([tile[y+4][x],tile[y+4][x+1],tile[y+4][x+2],tile[y+4][x+3]])},
-    		w:function(){return !(y>0) || mamnoo([tile[y-1][x],tile[y-1][x+1],tile[y-1][x+2],tile[y-1][x+3]])},
-    		d:function(){return (x+5 > b.tile[0].length) || mamnoo([tile[y][x+4],tile[y+1][x+4],tile[y+2][x+4],tile[y+3][x+4]])}
+    		a:function(){return !(x>0) || mamnoo([b.tile[y][x-1],b.tile[y+1][x-1],b.tile[y+2][x-1],b.tile[y+3][x-1]])},
+    		s:function(){return (y+5 > b.tile.length) || mamnoo([b.tile[y+4][x],b.tile[y+4][x+1],b.tile[y+4][x+2],b.tile[y+4][x+3]])},
+    		w:function(){return !(y>0) || mamnoo([b.tile[y-1][x],b.tile[y-1][x+1],b.tile[y-1][x+2],b.tile[y-1][x+3]])},
+    		d:function(){return (x+5 > b.tile[0].length) || mamnoo([b.tile[y][x+4],b.tile[y+1][x+4],b.tile[y+2][x+4],b.tile[y+3][x+4]])}
     	}
     	//console.log(h[j]())
     	if(typeof h[j] !== "undefined" && h[j]())return false;
@@ -108,7 +109,6 @@ $.get('./map.txt',function(map){
 	
 	//exporting variables:
 	b.stage=stage
-	b.tile=tile
 	b.tanks=tanks
 	//expose functions:
 	b.hit=hit
