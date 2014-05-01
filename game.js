@@ -17,18 +17,21 @@ $.get('./map.txt',function(map){
 	
     var stage = new createjs.Stage("game");
     
-    map = "\n"+map;
-    var i=0,x=0,y=-1;
-    while(map[i]){
-    	if(map[i]=="\n"){
-    		y++;
-    		x=0;
-    		b.tile[y]=Array();
-    	}else{
-    		b.tile[y][x]=parseInt(map[i])
-    		x++
-    	}
-    	i++;
+    function loadmap(map){
+	    b.tile=[]
+	    map = "\n"+map;
+	    var i=0,x=0,y=-1;
+	    while(map[i]){
+	    	if(map[i]=="\n"){
+	    		y++;
+	    		x=0;
+	    		b.tile[y]=Array();
+	    	}else{
+	    		b.tile[y][x]=parseInt(map[i])
+	    		x++
+	    	}
+	    	i++;
+    }
     }
     function drawmap(){
     	stage.removeAllChildren()
@@ -38,6 +41,7 @@ $.get('./map.txt',function(map){
 	    	}
 	    }
     }
+    loadmap(map)
     drawmap()
     
     //tank move:

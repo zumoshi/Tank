@@ -3,6 +3,7 @@
 	<head>
 		<script src="./jq.js"></script>
 		<script src="./easel.js"></script>
+		<script src="./filesave.js"></script>
 		<script src="./game.js"></script>
 		<script src="./ai.js"></script>
 		<style>
@@ -58,6 +59,10 @@
 			$('#cpmap').val(map)
 			$('#cpmap').show()
 		}
+		function givemap_f(){
+			var blob = new Blob([giveme()], {type: "text/plain;charset=utf-8"});
+			saveAs(blob, "shahkar.map");
+		}
 		</script>
 	</head>
 	<body>
@@ -74,6 +79,7 @@
 				<input type="button" style="width:10px;height:17px;background:url(./tile/8.png)" onclick="mode=8" />
 				<input type="button" style="width:10px;height:17px;background:url(./tile/9.png)" onclick="mode=9" />
 				<input type="button" value="Done!" onclick="givemap()" />
+				<input type="button" value="Download!" onclick="givemap_f()" />
 				Size:<input type="range" min="1" max="51" value="1" step="2" onchange="ghalam=this.value" />
 				<input type="button" value="Ctrl_z" onclick="if(ctrl_z.length)b.tile=ctrl_z.pop();b.drawmap();b.stage.update();" />
 			</div>
