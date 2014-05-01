@@ -4,6 +4,7 @@
 		<script src="./jq.js"></script>
 		<script src="./easel.js"></script>
 		<script src="./game.js"></script>
+		<script src="./ai.js"></script>
 		<style>
 			.tank{
 				transition: -webkit-transform 0.5s,top 0.1s,left 0.1s;

@@ -1,7 +1,7 @@
 var tank={};
 $(document).ready(function(){
 $.get('./map.txt',function(map){
-	var tile=Array(), png={};
+	var tile=Array(), png={}, tanks=[];
 	//var _tile = Array();
 	//for(var i =1;i<7;i++)_tile[i]=(new createjs.Bitmap('./tile/'+i+'.png'));
 	//tank = new createjs.Bitmap('./tank.png');
@@ -36,31 +36,37 @@ $.get('./map.txt',function(map){
     }
     
     tank=b.tank('./tank.png',90,2)
+    tanks.push(tank.loc)
+    
+    var enemy=b.tank('./tank_r.png',20,65)
+    tanks.push(enemy.loc)
+    ai.one(enemy,{move:tank_move,shoot:shelik},tanks,tile)
     
     //tank move:
     var key_interval;
     $( window ).keydown(function( event ) {
     	if([37,38,39,40].indexOf(event.keyCode)==-1)return
-    	tank_move({charCode:JSON.parse('{"37":"a","38":"w","39":"d","40":"s"}')[event.keyCode].charCodeAt(0)})
+    	tank_move(tank,JSON.parse('{"37":"a","38":"w","39":"d","40":"s"}')[event.keyCode])
     })
-    $( window ).keypress(tank_move)
+    $( window ).keypress(function(e){tank_move(tank,String.fromCharCode(e.charCode))})
     
-    function tank_move( event ) {
+    function tank_move( tank,key ) {
     	//console.log(event)
-    	var key =String.fromCharCode(event.charCode)
     	var rot={w:0,a:270,s:180,d:90}
     	if(typeof rot[key] !== "undefined"){
     		tank.rotation=rot[key]
-	    	if(ejaze(tank.x/10,tank.y/10,key)){
-	    		var move_x={a:-10,d:+10},move_y={w:-10,s:+10}
-	    		if(typeof move_x[key] !== "undefined")tank.x+=move_x[key]
-	    		if(typeof move_y[key] !== "undefined")tank.y+=move_y[key]
+	    	if(ejaze(tank.loc.x,tank.loc.y,key)){
+	    		var move_x={a:-1,d:+1},move_y={w:-1,s:+1}
+	    		if(typeof move_x[key] !== "undefined")tank.loc.x+=move_x[key]
+	    		if(typeof move_y[key] !== "undefined")tank.loc.y+=move_y[key]
 	    	}
 	    	tank.update()
-    	}else if(event.charCode==' '.charCodeAt(0)){
-    		console.log('boom!')
-    		b.gloole(tank.x/10+2,tank.y/10+2,JSON.parse('{"0":"w","270":"a","180":"s","90":"d"}')[tank.rotation])
+    	}else if(key==' '){
+    		shelik(tank);
     	}
+    }
+    function shelik(tank){
+    	b.gloole(tank.loc.x+2,tank.loc.y+2,JSON.parse('{"0":"w","270":"a","180":"s","90":"d"}')[tank.rotation])
     }
     
     function ejaze(x,y,j){
@@ -93,21 +99,23 @@ $.get('./map.txt',function(map){
 	//exporting variables:
 	b.stage=stage
 	b.tile=tile
+	b.tanks=tanks
 })})
 
 var b={
 	tank:function(png,x,y){
 		var tmp={}
-		tmp.x=x*10
-    	tmp.y=y*10
+		tmp.loc={}
+		tmp.loc.x=x
+    	tmp.loc.y=y
     	tmp.rotation=0
     	tmp.obj=$('<img>')
     		.attr('src',png)
     		.addClass('tank')
     		.appendTo('#wrapper')
     	tmp.update=function(){tmp.obj.css({
-    		top:tmp.y+'px',
-    		left:tmp.x+'px',
+    		top:tmp.loc.y*10+'px',
+    		left:tmp.loc.x*10+'px',
     		'transform':'rotate('+tmp.rotation+'deg)',
     		'-webkit-transform':'rotate('+tmp.rotation+'deg)',
     		'-moz-transform':'rotate('+tmp.rotation+'deg)',
@@ -118,26 +126,26 @@ var b={
 	},
 	gloole:function(x,y,dir){
 		var tmp={}
-		tmp.x=x*10
-    	tmp.y=y*10
+		tmp.x=x
+    	tmp.y=y
     	tmp.obj=$('<div>')
     		.addClass('gloole')
     		.appendTo('#wrapper')
     	tmp.update=function(){tmp.obj.css({
-    		top:tmp.y+'px',
-    		left:tmp.x+'px',
+    		top:tmp.y*10+'px',
+    		left:tmp.x*10+'px',
     		position:'absolute'
     	})}
     	tmp.update()
     	tmp.tmr=setInterval(function(){
-    		var move_x={a:-10,d:+10},move_y={w:-10,s:+10}
+    		var move_x={a:-1,d:+1},move_y={w:-1,s:+1}
     		if(typeof move_x[dir] !== "undefined")tmp.x+=move_x[dir]
     		if(typeof move_y[dir] !== "undefined")tmp.y+=move_y[dir]
     		tmp.update()
     		
-    		if(tmp.x/10 < 0 || tmp.x/10 > b.tile[0].length
-    			|| tmp.y/10<0 || tmp.y/10 > b.tile.length){
-    				console.log([tmp.x,tmp.y])
+    		if(tmp.x < 0 || tmp.x > b.tile[0].length
+    			|| tmp.y<0 || tmp.y > b.tile.length){
+    				//console.log([tmp.x,tmp.y])
     				clearInterval(tmp.tmr)
     				tmp.obj.remove()
     				tmp=null
