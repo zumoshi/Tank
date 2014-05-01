@@ -36,7 +36,7 @@
 				b.drawmap()
 				b.stage.update()
 			}
-		})
+		}
 		function givemap(){
 			var map='',tile=b.tile
 			for(var j=0;j<tile.length;j++){
