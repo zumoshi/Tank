@@ -48,7 +48,7 @@
 				b.stage.update()
 			}
 		}
-		function givemap(){
+		function givemap(show){
 			var map='',tile=b.tile
 			for(var j=0;j<tile.length;j++){
 				for(var i=0;i<tile[0].length;i++){
@@ -58,11 +58,11 @@
 			}
 			return map
 			$('#cpmap').val(map)
-			$('#cpmap').show()
+			if(typeof show!=="undefined")$('#cpmap').show()
 		}
 		function givemap_f(){
 			var blob = new Blob([givemap()], {type: "text/plain;charset=utf-8"});
-			saveAs(blob, "shahkar.map");
+			saveAs(blob, prompt("esm file chi bashe?","shahkar.map"));
 		}
 		</script>
 	</head>
@@ -79,7 +79,7 @@
 				<input type="button" style="width:10px;height:17px;background:url(./tile/7.png)" onclick="mode=7" />
 				<input type="button" style="width:10px;height:17px;background:url(./tile/8.png)" onclick="mode=8" />
 				<input type="button" style="width:10px;height:17px;background:url(./tile/9.png)" onclick="mode=9" />
-				<input type="button" value="Done!" onclick="givemap()" />
+				<input type="button" value="ViewSource!" onclick="givemap(true)" />
 				<input type="button" value="Download!" onclick="givemap_f()" />
 				Size:<input type="range" min="1" max="51" value="1" step="2" onchange="ghalam=this.value" />
 				<input type="button" value="Ctrl_z" onclick="if(ctrl_z.length)b.tile=ctrl_z.pop();b.drawmap();b.stage.update();" />
