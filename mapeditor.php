@@ -18,7 +18,7 @@
 			#game{cursor:pointer;}
 		</style>
 		<script>
-		var mode=1
+		var mode=1,ghalam=1
 		function mission(){
 			var down=false
 			$('#game')
@@ -30,9 +30,18 @@
 					paint(~~(e.offsetX/10),~~(e.offsetY/10))
 				})
 			function paint(x,y){
-				console.log([x,y,b.tile[y][x],mode])
+				//console.log([x,y,b.tile[y][x],mode])
 				if(b.tile[y][x]==mode)return
-				b.tile[y][x]=mode
+				
+				if(ghalam==1){b.tile[y][x]=mode}
+					else{
+						for(var i = -~~(ghalam/2);i<~~(ghalam/2);i++){
+							for(var j = -~~(ghalam/2);j<~~(ghalam/2);j++){
+								b.tile[y+i][x+j]=mode
+							}
+						}
+					}
+				
 				b.drawmap()
 				b.stage.update()
 			}
@@ -64,6 +73,9 @@
 				<input type="button" value="8" onclick="mode=8" />
 				<input type="button" value="9" onclick="mode=9" />
 				<input type="button" value="Done!" onclick="givemap()" />
+				<input type="button" value="S:1" onclick="ghalam=1" />
+				<input type="button" value="S:3" onclick="ghalam=3" />
+				<input type="button" value="S:5" onclick="ghalam=5" />
 			</div>
 		</div>
 		<textarea id="cpmap" style="display:none;"></textarea>
