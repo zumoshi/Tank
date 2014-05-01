@@ -56,14 +56,28 @@
 				}
 				map+="\n"
 			}
-			return map
+			if(typeof show==="undefined")return map
 			$('#cpmap').val(map)
-			if(typeof show!=="undefined")$('#cpmap').show()
+			$('#cpmap').show()
 		}
 		function givemap_f(){
 			var blob = new Blob([givemap()], {type: "text/plain;charset=utf-8"});
 			saveAs(blob, prompt("esm file chi bashe?","shahkar.map"));
 		}
+		function readText(filePath) {
+	        var output = ""; //placeholder for text output
+	        var reader = new FileReader();
+	        if(filePath.files && filePath.files[0]) {           
+	            reader.onload = function (e) {
+	                output = e.target.result;
+	                b.loadmap(output);
+	                b.drawmap();
+	                b.stage.update();
+	            };//end onload()
+	            reader.readAsText(filePath.files[0]);
+	        }
+	        return true;
+	    }  
 		</script>
 	</head>
 	<body>
@@ -79,9 +93,12 @@
 				<input type="button" style="width:10px;height:17px;background:url(./tile/7.png)" onclick="mode=7" />
 				<input type="button" style="width:10px;height:17px;background:url(./tile/8.png)" onclick="mode=8" />
 				<input type="button" style="width:10px;height:17px;background:url(./tile/9.png)" onclick="mode=9" />
+				Size:<input type="range" min="1" max="51" value="1" step="2" onchange="ghalam=this.value" />
+				|
 				<input type="button" value="ViewSource!" onclick="givemap(true)" />
 				<input type="button" value="Download!" onclick="givemap_f()" />
-				Size:<input type="range" min="1" max="51" value="1" step="2" onchange="ghalam=this.value" />
+				Load:<input type="file" onchange='readText(this)' />
+				|
 				<input type="button" value="Ctrl_z" onclick="if(ctrl_z.length)b.tile=ctrl_z.pop();b.drawmap();b.stage.update();" />
 			</div>
 		</div>

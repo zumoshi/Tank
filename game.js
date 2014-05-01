@@ -117,6 +117,7 @@ $.get('./map.txt',function(map){
 	//expose functions:
 	b.hit=hit
 	b.drawmap=drawmap
+	b.loadmap=loadmap
 	b.pngtile=pngtile
 	b.aiapi={move:tank_move,shoot:shelik}
 	//init:
