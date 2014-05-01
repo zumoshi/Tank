@@ -49,14 +49,18 @@ $.get('./map.txt',function(map){
     	//console.log(event)
     	var key =String.fromCharCode(event.charCode)
     	var rot={w:0,a:270,s:180,d:90}
-    	if(typeof rot[key] === "undefined")return;
-    	tank.rotation=rot[key]
-    	if(ejaze(tank.x/10,tank.y/10,key)){
-    		var move_x={a:-10,d:+10},move_y={w:-10,s:+10}
-    		if(typeof move_x[key] !== "undefined")tank.x+=move_x[key]
-    		if(typeof move_y[key] !== "undefined")tank.y+=move_y[key]
+    	if(typeof rot[key] !== "undefined"){
+    		tank.rotation=rot[key]
+	    	if(ejaze(tank.x/10,tank.y/10,key)){
+	    		var move_x={a:-10,d:+10},move_y={w:-10,s:+10}
+	    		if(typeof move_x[key] !== "undefined")tank.x+=move_x[key]
+	    		if(typeof move_y[key] !== "undefined")tank.y+=move_y[key]
+	    	}
+	    	tank.update()
+    	}else if(event.charCode==' '.charCodeAt(0)){
+    		console.log('boom!')
+    		b.gloole(tank.x/10+2,tank.y/10+2,JSON.parse('{"0":"w","270":"a","180":"s","90":"d"}')[tank.rotation])
     	}
-    	tank.update()
     }
     
     function ejaze(x,y,j){
@@ -110,6 +114,35 @@ var b={
     		position:'absolute'
     	})}
     	tmp.update()
+    	return tmp;
+	},
+	gloole:function(x,y,dir){
+		var tmp={}
+		tmp.x=x*10
+    	tmp.y=y*10
+    	tmp.obj=$('<div>')
+    		.addClass('gloole')
+    		.appendTo('#wrapper')
+    	tmp.update=function(){tmp.obj.css({
+    		top:tmp.y+'px',
+    		left:tmp.x+'px',
+    		position:'absolute'
+    	})}
+    	tmp.update()
+    	tmp.tmr=setInterval(function(){
+    		var move_x={a:-10,d:+10},move_y={w:-10,s:+10}
+    		if(typeof move_x[dir] !== "undefined")tmp.x+=move_x[dir]
+    		if(typeof move_y[dir] !== "undefined")tmp.y+=move_y[dir]
+    		tmp.update()
+    		
+    		if(tmp.x/10 < 0 || tmp.x/10 > b.tile[0].length
+    			|| tmp.y/10<0 || tmp.y/10 > b.tile.length){
+    				console.log([tmp.x,tmp.y])
+    				clearInterval(tmp.tmr)
+    				tmp.obj.remove()
+    				tmp=null
+    			}
+    	},150)
     	return tmp;
 	}
 }
